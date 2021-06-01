@@ -4,7 +4,7 @@ COPY ./pom.xml ./pom.xml
 RUN mvn dependency:go-offline -B
 COPY ./src ./src
 
-RUN mvn package && cp target/userservice-hoi.jar app.jar
+RUN mvn package && cp target/userservice-init.jar app.jar
 
 # Rely on Docker's multi-stage build to get a smaller image based on JRE
 FROM openjdk:11
