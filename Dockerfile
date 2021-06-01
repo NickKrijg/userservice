@@ -1,11 +1,3 @@
-FROM openjdk:11
-EXPOSE 8089
-WORKDIR /app
-COPY target/userservice-init.jar .
-
-ENTRYPOINT ["java", "-jar", "userservice-init.jar"]
-
-
 FROM maven:3.8.1-jdk-11 as maven
 WORKDIR /app
 COPY ./pom.xml ./pom.xml
