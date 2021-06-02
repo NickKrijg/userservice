@@ -84,7 +84,7 @@ public class AuthenticateController {
     }
 
     private Set<Role> getUserRole() {
-        return Stream.of(new Role("USER"))
+        return Stream.of(new Role("USER", "Standard user"))
                 .collect(Collectors.toSet());
     }
 }

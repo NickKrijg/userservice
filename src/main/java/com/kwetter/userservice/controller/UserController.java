@@ -3,6 +3,7 @@ package com.kwetter.userservice.controller;
 import com.kwetter.userservice.entity.Role;
 import com.kwetter.userservice.entity.User;
 import com.kwetter.userservice.exception.InvalidUserReferenceException;
+import com.kwetter.userservice.exception.RabbitConnectionException;
 import com.kwetter.userservice.rabbit.RabbitMQSender;
 import com.kwetter.userservice.service.RoleService;
 import com.kwetter.userservice.service.UserService;
@@ -86,12 +87,17 @@ public class UserController {
     public ResponseEntity forgetUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        rabbitMQSender.send(userDetails.getUsername());
+        try {
+            rabbitMQSender.send(userDetails.getUsername());
+        } catch (Exception ex) {
+            throw new RabbitConnectionException("User will not be forgotten - could not connect with RabbitMQ");
+        }
+
         System.out.println("send: " + userDetails.getUsername());
         try {
             return ResponseEntity.ok(userService.forgetUser(userDetails.getUsername()));
         } catch (Exception ex) {
-            throw new InvalidUserReferenceException(ex.getMessage());
+            throw new InvalidUserReferenceException("User not found");
         }
     }
 }
