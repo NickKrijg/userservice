@@ -19,7 +19,7 @@ public class RabbitMQConfig {
 
     @Bean
     Queue queue(){
-        return new Queue(queueName, false);
+        return new Queue(queueName, true);
     }
 
     @Bean
@@ -43,4 +43,12 @@ public class RabbitMQConfig {
         template.setMessageConverter(jsonMessageConverter());
         return template;
     }
+//
+//    @Bean
+//    public ConnectionFactory connectionFactory() {
+//        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
+//        cachingConnectionFactory.setHost(System.getProperty("RABBITMQ_HOST"));
+//        cachingConnectionFactory.setVirtualHost(System.getProperty("RABBITMQ_HOST"));
+//        return cachingConnectionFactory;
+//    }
 }

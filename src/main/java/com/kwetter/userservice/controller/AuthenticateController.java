@@ -6,6 +6,7 @@ import com.kwetter.userservice.models.AuthenticationRequest;
 import com.kwetter.userservice.models.AuthenticationResponse;
 import com.kwetter.userservice.models.UserDetailsImpl;
 import com.kwetter.userservice.service.MyUserDetailsService;
+import com.kwetter.userservice.service.RoleService;
 import com.kwetter.userservice.service.UserService;
 import com.kwetter.userservice.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class AuthenticateController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
 
     @PostMapping
     public ResponseEntity<AuthenticationResponse> authenticateByUserAndPassword(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
@@ -84,7 +88,11 @@ public class AuthenticateController {
     }
 
     private Set<Role> getUserRole() {
-        return Stream.of(new Role("USER", "Standard user"))
+        if (roleService.findRoleById("USER").isEmpty()) {
+            roleService.saveRole(new Role("USER", "Standard user"));
+        }
+
+        return Stream.of(new Role("USER"))
                 .collect(Collectors.toSet());
     }
 }

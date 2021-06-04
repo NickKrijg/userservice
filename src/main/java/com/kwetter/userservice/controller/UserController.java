@@ -93,7 +93,6 @@ public class UserController {
             throw new RabbitConnectionException("User will not be forgotten - could not connect with RabbitMQ");
         }
 
-        System.out.println("send: " + userDetails.getUsername());
         try {
             return ResponseEntity.ok(userService.forgetUser(userDetails.getUsername()));
         } catch (Exception ex) {
