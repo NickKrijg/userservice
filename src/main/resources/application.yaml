@@ -17,9 +17,14 @@ spring:
     allow-bean-definition-overriding: true
 
 eureka:
+  instance:
+    preferIpAddress: true
+    hostname: host.docker.internal
   client:
-    serviceUrl:
-      defaultZone: http://localhost:8083/eureka
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8083/eureka
+    healthcheck:
+      enabled: true
 
 server:
   port: 8089
