@@ -19,13 +19,13 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private final static String ROLES = "Roles";
+    private final String ROLES = "Roles";
 
     @Autowired
     private UserService userService;
 
     @Value("${auth.secret}")
-    String SECRET_KEY = "changekeyandlocation";
+    private final String SECRET_KEY = "changekeyandlocation";
 
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);
@@ -39,12 +39,12 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public ArrayList<String> extractRoles(String token) {
+    public List<String> extractRoles(String token) {
         return (ArrayList<String>) extractClaim(token, claims -> claims.get(ROLES));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token);
+        final var claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
@@ -59,7 +59,7 @@ public class JwtUtil {
     public String generateToken(UserDetailsImpl userDetails) {
         Map<String, Object> claims = new HashMap<>();
         Set<String> userRoles = new HashSet<>();
-        User user = userService.findUserByUsername(userDetails.getUsername())
+        var user = userService.findUserByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + userDetails.getUsername()));
 
         for(Role role:user.getRoles()){

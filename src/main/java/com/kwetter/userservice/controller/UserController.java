@@ -31,7 +31,7 @@ public class UserController {
     RabbitMQSender rabbitMQSender;
 
     @GetMapping("/hello")
-    public String HelloWorld(){
+    public String helloWorld(){
         return "Hello worlds";
     }
 
@@ -58,7 +58,7 @@ public class UserController {
 
     @GetMapping("/view/me")
     public User getUserByMe() throws InvalidUserReferenceException {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userService.findUserByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new InvalidUserReferenceException("User Not Found with username: " + userDetails.getUsername()));
@@ -67,7 +67,7 @@ public class UserController {
     @PatchMapping("view/me")
     public User patchMe(@RequestBody User newUser) {
         //Load and save approach
-        User user = getUserByMe();
+        var user = getUserByMe();
 
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
@@ -84,8 +84,8 @@ public class UserController {
 
     @Transactional
     @DeleteMapping("/forget")
-    public ResponseEntity forgetUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<Integer> forgetUser() {
+        var userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
             rabbitMQSender.send(userDetails.getUsername());

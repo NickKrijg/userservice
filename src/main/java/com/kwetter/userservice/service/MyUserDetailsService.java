@@ -14,7 +14,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetailsImpl loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.kwetter.userservice.entity.User user = userService.findUserByUsername(username)
+        var user = userService.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
         return UserDetailsImpl.build(user);

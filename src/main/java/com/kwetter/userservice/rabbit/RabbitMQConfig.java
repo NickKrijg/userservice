@@ -11,25 +11,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String topicExchangeName = "kwetter-rabbit";
+    public static final String TOPIC_EXCHANGE_NAME = "kwetter-rabbit";
 
-    public static final String queueName = "forget";
+    public static final String QUEUE_NAME = "forget";
 
-    public static final String routingKey = "forget.user.#";
+    public static final String ROUTING_KEY = "forget.user.#";
 
     @Bean
     Queue queue(){
-        return new Queue(queueName, true);
+        return new Queue(QUEUE_NAME, true);
     }
 
     @Bean
     TopicExchange exchange(){
-        return new TopicExchange(topicExchangeName);
+        return new TopicExchange(TOPIC_EXCHANGE_NAME);
     }
 
     @Bean
     Binding binding() {
-        return BindingBuilder.bind(queue()).to(exchange()).with(routingKey);
+        return BindingBuilder.bind(queue()).to(exchange()).with(ROUTING_KEY);
     }
 
     @Bean
@@ -39,16 +39,9 @@ public class RabbitMQConfig {
 
     @Bean
     public AmqpTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        final RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        final var template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(jsonMessageConverter());
         return template;
     }
-//
-//    @Bean
-//    public ConnectionFactory connectionFactory() {
-//        CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
-//        cachingConnectionFactory.setHost(System.getProperty("RABBITMQ_HOST"));
-//        cachingConnectionFactory.setVirtualHost(System.getProperty("RABBITMQ_HOST"));
-//        return cachingConnectionFactory;
-//    }
+
 }

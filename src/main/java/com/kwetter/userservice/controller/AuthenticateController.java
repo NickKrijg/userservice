@@ -17,12 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,10 +44,8 @@ public class AuthenticateController {
 
     @PostMapping
     public ResponseEntity<AuthenticationResponse> authenticateByUserAndPassword(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        Authentication authentication = null;
-        System.out.println("authenticate");
         try {
-            authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException ex) {
@@ -65,14 +59,11 @@ public class AuthenticateController {
 
         final String jwt = jwtUtil.generateToken(userDetails);
 
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        final String jwt = jwtUtil.generateToken(authentication);
-
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody UserDTO user) {
+    public ResponseEntity<?> registerUser(@RequestBody UserDTO user) {
         if (userService.existsByUsername(user.getUsername())){
             return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
         }
@@ -83,7 +74,7 @@ public class AuthenticateController {
         newUser.setEmail(user.getEmail());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
-        
+
         //init user
         userService.saveUser(newUser);
 
