@@ -1,12 +1,10 @@
 package com.kwetter.userservice.util;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JwtUtilTest {
 
@@ -34,7 +32,7 @@ class JwtUtilTest {
     void extractRoles() {
         JwtUtil jwtUtil = new JwtUtil();
 
-        ArrayList<String> actual = jwtUtil.extractRoles(token);
+        List<String> actual = jwtUtil.extractRoles(token);
 
         assertEquals("USER", actual.get(0));
     }
