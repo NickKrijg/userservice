@@ -2,6 +2,7 @@ package com.kwetter.userservice.controller;
 
 import com.kwetter.userservice.entity.Role;
 import com.kwetter.userservice.entity.User;
+import com.kwetter.userservice.entity.UserDTO;
 import com.kwetter.userservice.models.AuthenticationRequest;
 import com.kwetter.userservice.models.AuthenticationResponse;
 import com.kwetter.userservice.models.UserDetailsImpl;
@@ -71,20 +72,28 @@ public class AuthenticateController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody User user) {
+    public ResponseEntity registerUser(@RequestBody UserDTO user) {
         if (userService.existsByUsername(user.getUsername())){
             return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
         }
+
+        var newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        newUser.setEmail(user.getEmail());
+        newUser.setFirstName(user.getFirstName());
+        newUser.setLastName(user.getLastName());
+        
         //init user
-        userService.saveUser(user);
+        userService.saveUser(newUser);
 
         //set roles
-        user.setRoles(getUserRole());
+        newUser.setRoles(getUserRole());
 
         //update user
-        userService.saveUser(user);
+        userService.saveUser(newUser);
 
-        return ResponseEntity.ok(user.getUserId());
+        return ResponseEntity.ok(newUser.getUserId());
     }
 
     private Set<Role> getUserRole() {
