@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 @Component
 public class RabbitMQSender {
-    private static final Logger LOGGER = Logger.getLogger(RabbitMQSender.class.getName());;
+    private static final Logger LOGGER = Logger.getLogger(RabbitMQSender.class.getName());
 
     @Autowired
     private AmqpTemplate rabbitTemplate;
@@ -20,6 +20,6 @@ public class RabbitMQSender {
 
     public void send(String username) {
         rabbitTemplate.convertAndSend(exchange, routingKey, username);
-        LOGGER.log(Level.FINE, "Send msg = " + username);
+        LOGGER.log(Level.FINE, "Send msg = {0}", username);
     }
 }

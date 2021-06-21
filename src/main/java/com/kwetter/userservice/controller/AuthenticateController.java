@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -42,7 +41,7 @@ public class AuthenticateController {
     @Autowired
     private RoleService roleService;
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateByUserAndPassword(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
@@ -50,8 +49,6 @@ public class AuthenticateController {
             );
         } catch (BadCredentialsException ex) {
             throw new BadCredentialsException("Incorrect username or password", ex);
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
         final UserDetailsImpl userDetails = myUserDetailsService

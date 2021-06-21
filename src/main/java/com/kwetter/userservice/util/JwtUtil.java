@@ -1,7 +1,6 @@
 package com.kwetter.userservice.util;
 
 import com.kwetter.userservice.entity.Role;
-import com.kwetter.userservice.entity.User;
 import com.kwetter.userservice.models.UserDetailsImpl;
 import com.kwetter.userservice.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -19,13 +18,13 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private final String ROLES = "Roles";
+    private static final String ROLES = "Roles";
 
     @Autowired
     private UserService userService;
 
     @Value("${auth.secret}")
-    private final String SECRET_KEY = "changekeyandlocation";
+    private static final String SECRET_KEY = "changekeyandlocation";
 
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:8080", "*"})
+//@CrossOrigin(origins = {"http://localhost:8080", "*"})
 @RequestMapping("/user")
 public class UserController {
 
@@ -64,7 +64,7 @@ public class UserController {
                 .orElseThrow(() -> new InvalidUserReferenceException("User Not Found with username: " + userDetails.getUsername()));
     }
 
-    @PatchMapping("view/me")
+    @PatchMapping("/view/me")
     public User patchMe(@RequestBody User newUser) {
         //Load and save approach
         var user = getUserByMe();
