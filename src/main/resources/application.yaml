@@ -19,7 +19,7 @@ spring:
 eureka:
   instance:
     preferIpAddress: true
-    hostname: host.docker.internal
+    hostname: registry
   client:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:8083/eureka
