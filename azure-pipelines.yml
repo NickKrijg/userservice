@@ -12,6 +12,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'a59867e2-c09e-46a5-b9f5-19e5dda3fd40'
   imageRepository: 'nickkrijguserservice'
+  imageName: 'userservice'
   containerRegistry: 'kwetteracr.azurecr.io'
   dockerfilePath: 'Dockerfile'
   tag: '$(Build.BuildId)'
@@ -33,6 +34,7 @@ stages:
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
+        imageName: $(imageName):$(tag)
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
