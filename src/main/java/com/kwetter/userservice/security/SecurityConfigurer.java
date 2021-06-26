@@ -35,7 +35,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/authenticate/**", "/user/hello").permitAll()
                     .antMatchers("/user/createRole").hasAuthority("ADMIN")
-//                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
