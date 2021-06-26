@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+        - env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: super-secret
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://userdatabase:3306/userdb?createDatabaseIfNotExist=true
+            - name: SPRING_DATASOURCE_USER
+              value: root
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+            - name: EUREKA_INSTANCE_HOSTNAME
+              value: registry
+          image: kwetteracr.azurecr.io/userservice:latest
+          imagePullPolicy: Always
+          name: userservice
+          ports:
+            - containerPort: 8089
+      imagePullSecrets:
+        - name: kwettersecret
+      hostname: userservice
+      restartPolicy: Always
